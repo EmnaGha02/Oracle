@@ -17,25 +17,6 @@ Vous trouverez dans ce [lien](https://docs.google.com/presentation/d/1f5uyqowZ7u
 | t7 |  ------ |```Commit;```| Session 1: --> 1 row updated|
 | t8 | ------ |```SELECT ENAME, SAL FROM EMP WHERE ENAME IN ('Mohamed','Hichem', 'Maaoui');```|------|
 
-## Concurrence : Niveaux d'isolation des transactions
-
-Plus le niveau est permissif, plus l’exécution est fluide, plus les anomalies sont possibles.
-Plus le niveau est strict, plus l’exécution risque de rencontrer des blocages, moins les anomalies sont possibles.
-Le niveau d’isolation par défaut n’est jamais le plus strict c'est pourquoi quand l’isolation totale est nécessaire, il faut l’indiquer explicitement.
-
-Les 4 niveaux existants dans Oracle sont  **(ordonnés du moins strict au plus strict)** : 
-
-- **Read uncommited** : tout est permis 
-
-- **Read commited** : une requête accède à l’état de la base de données *au moment où la requête est exécutée*
-
-- **Repeatable read** : Une requête accède à l’état de la base de données *au moment où la transaction a débutée*
-
-- **Serializable** : Garantit une isolation totale => Cohérence de la base.
-
-Parfois, le niveau le plus strict rejette des transactions voire provoquer des interblocages.
-C'est pourquoi Oracle munit les développeurs de la clause ***FOR UPDATE***.
-Autrement dit, le développeur déclare qu’une lecture va être suivie d’une mise à jour et le système pose un verrou fort pour celle-là, pas de verrou pour les autres et ainsi ca permet de monter le niveau de blocage uniquement quand c’est nécessaire... mais ca repose sur le facteur humain qui n'est pas assez fiable.
 
 ### Demo Niveau d'isolation  READ COMMITTED 
 
@@ -88,53 +69,3 @@ Autrement dit, le développeur déclare qu’une lecture va être suivie d’une
 
 
 
-### Exemple de traitement avec "FOR UPDATE" ;
-
-```sh
-SET SERVEROUTPUT ON ;
-
-DECLARE 
-
-tmp_v_empno number (6,2);
-CURSOR cur IS SELECT EMPNO FROM EMP WHERE ENAME = 'Mohamed' FOR UPDATE of SAL;
-
-BEGIN 
-   DBMS_OUTPUT.PUT_LINE('START');
-
-   OPEN cur;   
-
-    FETCH cur INTO tmp_v_empno;
-
-      IF cur%notfound THEN
-          tmp_v_empno := -1 ; 
-          DBMS_OUTPUT.PUT_LINE('This Employee is currently being Updated, try again in a while');
-      ELSE
-          DBMS_OUTPUT.PUT_LINE(' Updating Employee Number  ' || tmp_v_empno );
-          UPDATE EMP SET SAL = 6666 WHERE CURRENT OF cur ;
-          COMMIT;
-    END IF;
-
-   CLOSE cur;
-
-   DBMS_OUTPUT.PUT_LINE(' Employee Number  ' || tmp_v_empno || ' Updated successfully !!'  );
-
-END;
-/
-
-```
-
-Pour vérifier :
-```sh
-SELECT EMPNO, SAL FROM EMP WHERE ENAME = 'Mohamed' ;
-```
-## Conclusion
-
-- Comprendre et utiliser correctement les niveaux d’isolation est impératif pour les applications transactionnelles
-
-- Savoir repérer les transactions dans une application. Elle doivent respecter lacohérence applicative(le système ne peut pas la deviner pour vous)
-
-- La clausefor updateest en théorie meilleure, mais repose sur le facteur humain
-
-- Savoir qu’en mode sérialisable on risque des rejets
-
-- Comprendre les risques dans les autres modes.
