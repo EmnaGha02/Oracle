@@ -20,7 +20,8 @@
       * [ username: devsecops2, password: devsecops2 ]
 
 
-```CREATE USER dev1 IDENTIFIED BY dev1;
+```
+CREATE USER dev1 IDENTIFIED BY dev1;
 CREATE USER dev2 IDENTIFIED BY dev2;
 CREATE USER tester1 IDENTIFIED BY tester1;
 CREATE USER tester2 IDENTIFIED BY tester2;
