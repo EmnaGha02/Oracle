@@ -1,7 +1,5 @@
 # TP4
 
-Vous trouverez dans ce [lien](https://docs.google.com/presentation/d/1tonsLynHdpmkTqB0wCP2WNfBjltlScxK00hekP2wruo/edit?usp=sharing) la présentation utilisée dans ce TP.
-
 ## Introduction
 
 Dans cette partie, nous allons détailler le langage de contrôle des données.
