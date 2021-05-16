@@ -26,7 +26,7 @@ CREATE USER tester1 IDENTIFIED BY tester1;
 CREATE USER tester2 IDENTIFIED BY tester2;
 CREATE USER devsecops1 IDENTIFIED BY devsecops1;
 CREATE USER devsecops2 IDENTIFIED BY devsecops2;
----
+
 ```
   --->  **Une fois qu'un utilisateur est créé, le DBA peut octroyer des privilèges de système spécifiques à cet utilisateur.**
  
